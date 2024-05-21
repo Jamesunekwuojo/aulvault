@@ -1,51 +1,33 @@
-const express = require('express');
+const { MongoClient } = require('mongodb');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const mongoose = require('mongoose');
+async function connectDB() {
+  try {
+    // Replace <username>, <password>, and <yourDatabaseName> with your actual MongoDB Atlas credentials and database name
+    const url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.t2qncee.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`;
 
-const app = express();
+    // Create a new MongoClient instance
+    const client = new MongoClient(url);
 
-const PORT = 3000;
-// connect to my mongoDb
+    // Connect the client to the server
+    await client.connect();
 
-const url = 'mongodb://127.0.0.1:27017/aulvaultDB'
+    // Access the specific database
+    const db = client.db(process.env.DB_NAME);
 
-// connect to mongoDB using mongoose ODM
+    // Query the 'aulvault' collection
+    const result = await db.collection('users').find().toArray();
 
-mongoose.connect(url,)
-.then(() =>{
-    console.log("Connection Successfully Established with mongoDB");
+    // Log the result
+    console.log(result);
 
-    //Defining ab asic mongoose schema
+    // Close the connection
+    await client.close();
+  } catch (err) {
+    console.error('Error connecting to the database', err);
+  }
+}
 
-    const Schema = mongoose.Schema;
-    const userSchema = new Schema({
-        name: String,
-        coursecode: String,
-
-    });
-
-    // converting schema to model
-
-    const UserModel = mongoose.model('User', userSchema);
-
-
-    app.get('/', async(req, res)=> {
-        // to fetch data from MongoDB using mongoose
-        const documents = await UserModel.find({}); 
-        res.json("Hello world")
-    
-    });
-
-
-})
-
-.catch((error) =>{
-    console.log('Error connecting to MongoDB:', error);
-})
-
-
-
-app.listen(PORT, () => {
-    console.log(`server is running on port ${PORT}`)
-
-});
+// Execute the function to connect to the database
+connectDB();
