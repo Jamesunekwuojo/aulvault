@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 const dotenv = require('dotenv');
-dotenv.config();
+// dotenv.config();
 
 async function connectDB() {
   try {
@@ -17,7 +17,14 @@ async function connectDB() {
     const db = client.db(process.env.DB_NAME);
 
     // Query the 'aulvault' collection
-    const result = await db.collection('users').find().toArray();
+    const Users = db.collection('users')
+    const result = await Users.find().toArray();//Read operation
+
+    //To create additional users(CREATE OPERATION)
+    await Users.insertOne({name:"Wole", matric:"AUL/CMP/22/89" , level:"200"});
+
+    //UPDATE OPERATION
+    // await Users.updateOne({_id: '664c52f20a0483e2ccbbf9f7'}, {$set: {name:"jeho"}});
 
     // Log the result
     console.log(result);

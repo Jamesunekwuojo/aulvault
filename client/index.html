@@ -23,7 +23,7 @@
   <div class="formdiv">
     <form>
       <label for="Uploader:">Uploader:</label>
-      <input type="text">
+      <input type="text" id="input1">
       <label for="Qoute:">Qoute:</label>
       <input type="text">
       <label for="Course title:">Title:</label>
@@ -35,29 +35,22 @@
     
   </div>
 
-  <script>
-    document.getElementById('myForm').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent form submission
-      const name = document.getElementById("name").value
-      const age = document.getElementById("age").value
-      const formData = new FormData(this); // Get form data
-      const requestBody = Object.fromEntries(formData.entries()); // Convert FormData to JSON object
+  <h2></h2>
 
-      fetch('http://localhost:3000/addUser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({name, age}) // Send form data as JSON in the request body
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('server-response').innerText = JSON.stringify(data, null, 2);
-      })
-      .catch(error => {
-        console.error('Error submitting form:', error);
-      });
+  <script>
+    const input1 = document.getElementById('input1');
+
+    const h2 = document.querySelector("h2");
+
+    input1.addEventListener("keyup", () =>{
+
+      h2.innerHTML = input1.value;
+
     });
+
+    
+
+  
   </script>
 </body>
 </html>
