@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const dbURL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.t2qncee.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`;
+// const dotenv = require('dotenv');
+// dotenv.config();
+const dbURL = "mongodb://127.0.0.1/vaulttwo";
+// const dbURL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.t2qncee.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`;
 
 async function connectDB() {
   try {
@@ -11,22 +11,23 @@ async function connectDB() {
 
     // Perform CRUD operations after successful connection
 
-    await crudOP();
+    // await crudOP();
   
   } catch (err) {
     console.log("Database connection error", err);
   }
 }
 connectDB();
+module.exports = connectDB;
 
 
-async function crudOP() {
-  try {
-    const collection = mongoose.connection.db.collection('users');
+// async function crudOP() {
+//   try {
+//     const collection = mongoose.connection.db.collection('users');
 
     // <------READ------>
-    const result = await collection.find().toArray();
-    console.log("read all documents:", result );
+    // const result = await collection.find().toArray();
+    // console.log("read all documents:", result );
 
     // <-----CREATE----->
     // const insertResult = await collection.insertOne({ name: 'John Doe', email: 'john.doe@example.com' });
@@ -48,15 +49,15 @@ async function crudOP() {
 
 
 
-  } catch (err) {
-    console.log("Error performing CRUD operations", err);
-  } finally {
-    // Close the database connection
-    mongoose.connection.close();
-  }
+//   } catch (err) {
+//     console.log("Error performing CRUD operations", err);
+//   } finally {
+//     // Close the database connection
+//     mongoose.connection.close();
+//   }
 
  
-}
+// }
 
 
 // Execute the function to connect to the database and perform operations

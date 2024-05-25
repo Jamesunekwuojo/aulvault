@@ -1,0 +1,42 @@
+Connect to your database:
+use vaulttwo
+
+Query the users collection:
+db.users.find().pretty()
+
+/---Interacting with collection---/
+
+// Create a new user
+const newUser = new User({ name: 'Alice', email: 'alice@example.com' });
+newUser.save();
+
+// Find all users
+User.find({}, (err, users) => {
+  if (err) return console.error(err);
+  console.log(users);
+});
+
+// Update a user
+User.updateOne({ email: 'alice@example.com' }, { name: 'Alice Wonderland' }, (err, result) => {
+  if (err) return console.error(err);
+  console.log(result);
+});
+
+// Delete a user
+User.deleteOne({ email: 'alice@example.com' }, (err) => {
+  if (err) return console.error(err);
+  console.log('User deleted');
+});
+
+
+/---Powershell script for performing delete request---/
+$headers = @{
+  "Content-Type" = "application/json"
+}
+
+$body = @{
+  "name" = "Bob"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:5000/users/deleteByName" -Method DELETE -Headers $headers -Body $body
+
